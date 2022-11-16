@@ -1,6 +1,9 @@
 """
 train_model.py
 Train, test, and save models
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
 August 2022
 """
 
@@ -64,8 +67,6 @@ def train_model(model: na.models.Model,
 
     log.info(f"Training will start at epoch {start_epoch}.")
     log.info(f"==> Starting training for {max(cfg.hyp.epochs - start_epoch, 0)} epochs...")
-    # todo: look into stopping conditions that are specific to auction training (i.e. regret dependent)
-    # highest_val_acc_so_far = -1
     best_so_far = False
     testing_metrics = {}
 
@@ -82,11 +83,6 @@ def train_model(model: na.models.Model,
         # if the loss is nan, then stop the training
         if np.isnan(float(loss)):
             raise ValueError(f"{ic.format()} Loss is nan, exiting...")
-        # val_acc = na.test(net, [loaders["val"]], device)[0]
-        # if val_acc > highest_val_acc_so_far:
-        #     best_so_far = True
-        #     highest_val_acc_so_far = val_acc
-        # log.info(f"Training loss at epoch {epoch}: {loss:.4}")
 
         for i in range(len(optimizer.param_groups)):
             na.write(writer, f"Learning_rate/group{i}",
@@ -117,7 +113,6 @@ def train_model(model: na.models.Model,
                      "optimizer": optimizer.state_dict(),
                      "model_configs": cfg.model,
                      "experiment_description": cfg.exp_str}
-            # out_str = f"model_best.pth" if best_so_far else f"model_{epoch}.pth"
             out_str = f"model_final.pth" if (epoch + 1) == cfg.hyp.epochs else f"model_{epoch}.pth"
             best_so_far = False
             log.info(f"Saving model to: {out_str}")

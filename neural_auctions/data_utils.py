@@ -1,6 +1,9 @@
 """
 data_utils.py
-utility functions for data processing
+Utility functions for data processing
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
 August 2022
 """
 

@@ -1,6 +1,9 @@
 """
 auction_utils.py
-functions for auction-realted calculations, like agent utility
+Functions for auction-realted calculations, like agent utility
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
 August 2022
 """
 

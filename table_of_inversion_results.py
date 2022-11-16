@@ -1,6 +1,9 @@
 """
 table_of_inversion_results.py
-for making tables of results from multiple inversion runs
+For making tables of results from multiple inversion runs
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
 August 2022
 """
 

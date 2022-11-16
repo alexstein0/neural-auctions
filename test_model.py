@@ -1,6 +1,9 @@
 """
 test_model.py
 Test saved models
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
 August 2022
 """
 

@@ -1,7 +1,10 @@
 """
 run_helpers.py
-helper functions for all kinds of experiements
-September 2022
+Helper functions for all kinds of experiements
+Developed collaborativley by
+    Alex Stein, Avi Schwarzschild, and Michael Curry
+    for "Protecting Bidder Information in Neural Auctions" project
+August 2022
 """
 
 import json
