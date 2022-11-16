@@ -1,3 +1,6 @@
+# 2x2 auction with very little data that should run on a CPU
+python train_model.py experiment_name=train_2x2 load.train_experiment_name=null hyp.epochs=3 hyp.train_num_examples=256 hyp.test_num_examples=256 hyp.test_batch_size=128 hyp.train_batch_size=128 hyp.lr=0.001 hyp.test_val_period=5 hyp.save_period=10 hyp.test_misreport_lr=0.1 hyp.test_misreport_iters=10 hyp.test_misreport_inits=1 model.n_agents=2 model.n_items=2 model.n_hidden_layers=3 model.rho_incr_epoch_freq=2 model.lagr_update_iter_freq=100 model.rho=1.0 model.rho_incr_amount=5 model.regret_weight=5.0 model.train_misreport_lr=0.1 model.train_misreport_iters=25 model.train_misreport_inits=10
+
 # 1x2 auction
 python train_model.py experiment_name=train_1x2 load.train_experiment_name=null hyp.train_num_examples=640000 hyp.epochs=10 hyp.train_batch_size=128 hyp.lr=0.001 hyp.test_val_period=1 hyp.save_period=1 hyp.test_misreport_lr=0.1 hyp.test_misreport_iters=1000 hyp.test_misreport_inits=100 model.n_agents=1 model.n_items=2 model.n_hidden_layers=3 model.rho_incr_epoch_freq=2 model.lagr_update_iter_freq=100 model.rho=1.0 model.rho_incr_amount=10 model.regret_weight=5.0 model.train_misreport_lr=0.1 model.train_misreport_iters=25 model.train_misreport_inits=10
 
