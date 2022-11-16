@@ -19,11 +19,11 @@ def get_df(filepath):
     pd.set_option("display.max_rows", None)
     df = pd.DataFrame()
     idx = 0
-    for f_name in glob.iglob(f"{filepath}/*/result.json", recursive=True):
+    for f_name in glob.iglob(f"{filepath}/**/result.json", recursive=True):
         with open(f_name, "r") as fp:
             result = json.load(fp)
+            print(json.dumps(result, indent=4))
 
-        # todo: clean this up
         folder = os.path.join(*f_name.split("/")[:-1])
         cfg = OmegaConf.load(f"{folder}/.hydra/config.yaml")
         result["n_agents"] = cfg.model.n_agents
@@ -49,11 +49,6 @@ def get_table(filepath, disp_max, disp_min, no_sem, pivot):
     pd.set_option("display.max_rows", None)
     df = get_df(filepath)
     df["count"] = 1
-    # df = df.sort_values(["n_agents", "n_items", "initial_rho", "initial_regret_weight", "random_seed"])
-    # df = df[["name", "n_agents", "n_items", "initial_rho", "initial_regret_weight", "random_seed",
-    #          "train_misreport_iters", "test_payment", "myerson",
-    #          "test_regret_mean", "test_regret_max", "count"]]
-    #
     df = df.sort_values(["n_agents", "n_items"])
     df = df[["run_id",
              "n_agents",
@@ -67,7 +62,6 @@ def get_table(filepath, disp_max, disp_min, no_sem, pivot):
              "count"]]
 
     index = ["n_agents", "n_items", "train_misreport_inits"]
-    # index = ["initial_rho", "initial_regret_weight"]
     values = ["mean", "sem"] if not no_sem else ["mean"]
     if disp_max:
         values.append("max")
@@ -89,8 +83,6 @@ def get_table(filepath, disp_max, disp_min, no_sem, pivot):
 def main():
     parser = argparse.ArgumentParser(description="Analysis parser")
     parser.add_argument("filepath", type=str)
-    parser.add_argument("--model_list", type=str, nargs="+", default=None,
-                        help="only plot models with model name in given list")
     parser.add_argument("--max", action="store_true", help="add max values to table?")
     parser.add_argument("--min", action="store_true", help="add min values too table?")
     parser.add_argument("--no-sem", action="store_true", help="add min values too table?")

@@ -17,9 +17,10 @@ import torch
 from neural_auctions import myerson, get_random_recovery_rate, get_recovery_rate
 
 
-def get_row_in_df(results_dir, model_name: str, tol):
-    with open(os.path.join(results_dir, f"{model_name}_result.json"), "r") as fh:
+def get_row_in_df(result_path, tol):
+    with open(result_path, "r") as fh:
         result = json.load(fh)
+    results_dir = str(Path(result_path).parent.absolute())
     guessed_bid_f_name = os.path.join(results_dir, "guessed_bids.pth")
     true_bid_f_name = os.path.join(results_dir, "true_bids.pth")
     guessed_bids = torch.load(guessed_bid_f_name, map_location="cpu")
@@ -47,12 +48,9 @@ def get_row_in_df(results_dir, model_name: str, tol):
 def get_df(filepath, tol):
     df = pd.DataFrame()
     idx = 0
-    for d_dir in glob.iglob(f"{filepath}/*/*/*_result.json", recursive=True):
-        model_name = Path(d_dir).parent.name
-        d_dir = str(Path(d_dir).parent.absolute())
-        new_row_dict = get_row_in_df(d_dir, model_name, tol)
-        parent_name = str(Path(Path(d_dir).parent).name)
-        new_row_dict["parent_name"] = parent_name
+    for result_path in glob.iglob(f"{filepath}*/**/*_result.json", recursive=True):
+        new_row_dict = get_row_in_df(result_path, tol)
+        new_row_dict["model_name"] = result_path.split("/")[-1][:-12]
         df = pd.concat([df, pd.DataFrame.from_dict({idx: new_row_dict}, orient="index")])
         idx += 1
     return df
@@ -84,9 +82,8 @@ def get_table(filepath, args):
              "regret_max",
              "bids_mean_inversion_error",
              "count",
-             "parent_name"]]
+             "model_name"]]
 
-    # index = ["n_agents", "n_items", "use_bidder_info", "train_misr_inits", "privacy_lr", "sigma"]
     index = ["n_agents", "n_items", "use_bidder_info", "sigma"]
     values = ["mean", "sem"] if not no_sem else ["mean"]
     if disp_max:
@@ -122,7 +119,7 @@ def main():
     args = parser.parse_args()
     table = get_table(args.filepath, args)
     table = table.round(4)
-    # print(table.to_markdown())
+    print(table.to_markdown())
     print(table)
     table.columns = table.columns.map("_".join)
     table.columns.name = None
