@@ -1,0 +1,22 @@
+defaults:
+  - hyp: testing_hyperparameters
+  - override hydra/job_logging: custom
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/test/${experiment_name}/${run_id}
+  job_logging:
+    handlers:
+      file:
+        filename: test.log
+  job:
+    chdir: True
+
+test_log: test_log
+experiment_name: default
+
+exp_str:
+load:
+  runtime_cwd: ${hydra:runtime.cwd}
+  model_path: ???

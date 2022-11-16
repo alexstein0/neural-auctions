@@ -1,0 +1,23 @@
+epochs: 100
+lr: 0.01
+lr_decay: step
+lr_factor: 0.1
+lr_schedule:
+  - 100000000
+optimizer: adam
+random_seed:
+save_period: 100
+sigma: 0
+test_batch_size: 512
+test_data_generating_distribution: uniform
+test_misreport_iters: 1000
+test_misreport_inits: 1
+test_misreport_lr: 1e-1
+test_num_examples: 10000
+test_val_period: 5
+train_batch_size: 2000
+train_data_generating_distribution: uniform
+train_num_examples: 160_000
+util_num_samples: 1
+warmup_period: 0
+weight_decay: 2e-4

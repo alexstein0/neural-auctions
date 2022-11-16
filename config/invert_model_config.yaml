@@ -1,0 +1,21 @@
+defaults:
+  - hyp: inversion_hyperparameters
+  - override hydra/job_logging: custom
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/invert/${experiment_name}/${run_id}
+  job_logging:
+    handlers:
+      file:
+        filename: inversion.log
+  job:
+    chdir: True
+
+invert_log: invert_log
+experiment_name: default
+exp_str:
+load:
+  runtime_cwd: ${hydra:runtime.cwd}
+  model_path: ???

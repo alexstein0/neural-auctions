@@ -1,0 +1,17 @@
+privacy_alpha: 0.0
+privacy_data_generating_distribution: uniform
+privacy_iters: 10_000
+privacy_lr: 0.02
+privacy_optimizer: adam
+privacy_tol: 0.02
+privacy_val_period: 100
+random_seed:
+sigma: 0.0
+test_batch_size: 512
+test_data_generating_distribution: uniform
+test_misreport_iters: 2000
+test_misreport_inits: 50
+test_misreport_lr: 0.1
+test_num_examples: 10000
+use_bidder_info: false
+util_num_samples: 1

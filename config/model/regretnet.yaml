@@ -1,0 +1,22 @@
+name: regretnet
+activation: "relu"
+hidden_layer_size: 100
+n_hidden_layers: 2
+separate: false
+unit: false
+n_agents: 2
+n_items: 2
+lagr_update_iter_freq: 100
+payment_weight: 1.0
+regret_weight: 0.0
+rho: 1.0
+rho_incr_amount: 1
+rho_incr_epoch_freq:
+rho_incr_iter_freq:
+use_max_regret_in_loss: false
+train_misreport_iters: 25
+train_misreport_inits: 1
+train_misreport_lr: 1e-1
+regret_quad_type: mean_first
+regret_limit: -1
+tile_misreports: true

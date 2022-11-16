@@ -1,0 +1,21 @@
+defaults:
+  - hyp: training_hyperparameters
+  - model: regretnet
+  - override hydra/job_logging: custom
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/train/${experiment_name}/${run_id}
+  job_logging:
+    handlers:
+      file:
+        filename: train.log
+  job:
+    chdir: True
+
+train_log: train_log
+experiment_name: default
+exp_str:
+load:
+  train_experiment_name:
