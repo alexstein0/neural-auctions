@@ -76,7 +76,7 @@ This creates another unique `run_id` adjective-Name combination (different from 
 
 To generate a pivot table with average accuracies over several trials, [table_of_training_results.py](table_of_training_results.py), [table_of_testing_results.py](table_of_testing_results.py), and [table_of_inverting_results.py](table_of_inverting_results.py) are helpful. The first command line argument (without a flag) points to an ouput directory. All the json results are then read in and averages over similar runs are nicely tabulated. For example, if you run a few trials of `train_model.py` with the same command line arguments, including `experiment_name=my_experiment`, then you can run 
 
-```$ python make_table.py outputs/my_experiment```
+```$ python table_of_training_results.py outputs/train/my_experiment```
 
 to see the results in an easy-to-read format.
 
