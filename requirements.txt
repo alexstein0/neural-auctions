@@ -1,3 +1,4 @@
+almost-unique-id>=0.0.2
 fonttools==4.34.4
 hydra-core==1.2.0
 icecream==2.1.3

@@ -12,13 +12,6 @@ To install requirements:
 $ pip install -r requirements.txt
 ```
 
-Additionally, install the `almost-unique-id` package:
-
-```
-$ cd almost-unique-id
-$ pip install -e .
-```
-
 ## Training 
 
 To train models, run [train_model.py](train_model.py) with the desired command line arguments. With these arguments, you can modify the model architecture and set hyperparameters. The default values for all the arguments in the [hydra](config) directory configuration files and will work together to train a RegretNet. To try this, run the following.
