@@ -1,6 +1,17 @@
 # Neural Auctions
 A centralized repository for neural auction projects. Developed collaboratively by Alex Stein, Avi Schwarzschild, and Michael Curry, all at the University of Maryland. This repository contains an implementation of RegretNet ([Dütting et al.](https://arxiv.org/abs/1706.03459)) with scripts to train and test them. Additionally, this repository houses code to attack neural auctions with the goal of recovering private bidder information at test time. The attack code (with defense options) is available in [invert_model.py](invert_model.py). Our work on the topic is available in our paper called [Protecting Bidder Information in Neural Auctions](https://openreview.net/pdf?id=b5RD94lXu2j).
 
+## Citing our Work
+
+```
+@article{stein2023neural,
+  title={Neural Auctions Compromise Bidder Information},
+  author={Stein, Alex and Schwarzschild, Avi and Curry, Michael and Goldstein, Tom and Dickerson, John},
+  journal={arXiv preprint arXiv:2303.00116},
+  year={2023}
+}
+```
+
 ## Getting Started
 
 ### Requirements
