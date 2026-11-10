@@ -72,7 +72,7 @@ def invert_model(model: na.models.Model,
     log.info("invert_model.py invert_model() running.")
 
     # gather data and initialize guesses
-    true_bids, true_payments, true_allocs = na.get_data_from_loader(model, loaders["test"], cfg.hyp.sigma, device)
+    true_bids, true_payments, true_allocs = na.get_data_from_loader(model, loaders["test"], cfg.hyp.sigma, cfg.hyp.payment_sigma, device)
 
     # intialize the inversion with random data
     input_ranges = na.data_utils.preset_valuation_range(model_cfg.n_agents, model_cfg.n_items)
@@ -104,6 +104,7 @@ def invert_model(model: na.models.Model,
 
     for invert_iter in range(cfg.hyp.privacy_iters):
         invert_metrics = model.inversion_loop(cfg.hyp.sigma,
+                                              cfg.hyp.payment_sigma,
                                               cfg.hyp.privacy_alpha,
                                               optimizer,
                                               true_payments,
@@ -127,7 +128,8 @@ def invert_model(model: na.models.Model,
                               f" | MAE: {torch.mean(torch.abs(true_bids - guessed_bids)).item():2.6f}"
                               # f" | grad norm: {torch.norm(guessed_bids.grad):.4f}"
             log.info(invert_log_str)
-
+            # log.info(
+            #     f"Guessed bids stats min: {guessed_bids.min()}, max: {guessed_bids.max()}, mean: {guessed_bids.mean()}")
             # TensorBoard loss writing
             for key, value in invert_metrics.items():
                 na.write(writer, f"Inverting/{key}", value, invert_iter)
@@ -138,7 +140,7 @@ def invert_model(model: na.models.Model,
     torch.save(guessed_bids, "guessed_bids.pth")
 
     # print one example
-    guessed_allocs, guessed_payments = model(guessed_bids, cfg.hyp.sigma)
+    guessed_allocs, guessed_payments = model(guessed_bids, cfg.hyp.sigma, cfg.hyp.payment_sigma)
     log.info(f"\ntrue bids:\n {true_bids[1]}")
     log.info(f"\nguessed bids:\n {guessed_bids[1]}")
     log.info(f"\ntrue allocs:\n {true_allocs[1]}")
@@ -163,6 +165,7 @@ def invert_model(model: na.models.Model,
                            torch.norm(true_bids - guessed_bids, p=float("inf")).item()),
                           ("bids_recovery_rate", recovery_rate),
                           ("sigma", cfg.hyp.sigma),
+                          ("payment_sigma", cfg.hyp.payment_sigma),
                           ("use_bidder_info", cfg.hyp.use_bidder_info)])
     return results
 

@@ -29,7 +29,7 @@ def create_combined_misreports(misreports, valuations):
     return mask * tiled_mis + (1.0 - mask) * tiled_true
 
 
-def tiled_misreport_util(current_misreports, current_valuations, model, sigma=0):
+def tiled_misreport_util(current_misreports, current_valuations, model, sigma=0, payment_sigma=0):
     n_agents = current_valuations.shape[1]
     n_items = current_valuations.shape[2]
 
@@ -37,7 +37,7 @@ def tiled_misreport_util(current_misreports, current_valuations, model, sigma=0)
     tiled_misreports = create_combined_misreports(current_misreports, current_valuations)
     flatbatch_tiled_misreports = tiled_misreports.view(-1, n_agents, n_items)
 
-    allocations, payments = model(flatbatch_tiled_misreports, sigma=sigma)
+    allocations, payments = model(flatbatch_tiled_misreports, auction_sigma=sigma, payment_sigma=payment_sigma)
 
     reshaped_payments = payments.view(-1, n_agents, n_agents)
     reshaped_allocations = allocations.view(-1, n_agents, n_agents, n_items)
@@ -49,14 +49,14 @@ def tiled_misreport_util(current_misreports, current_valuations, model, sigma=0)
     return agent_utils
 
 
-def get_misreports_from_bids_with_multiple_inits(model, bids, num_inits, misreport_iters, misreport_lr, sigma=0,
+def get_misreports_from_bids_with_multiple_inits(model, bids, num_inits, misreport_iters, misreport_lr, sigma=0, payment_sigma=0,
                                                  util_num_samples=1, return_agent_util=False):
     n_batch, n_agents, n_items = bids.size()
     big_bids = bids.repeat(num_inits, 1, 1)
 
     # if the model is noisy, we need to pass each initialization through the net num_samples times to average over
     # samples of the noise.
-    num_samples = util_num_samples if sigma > 0 else 1
+    num_samples = util_num_samples if (sigma > 0 or payment_sigma > 0) else 1
 
     current_misreports = torch.rand_like(big_bids)
     big_bids = big_bids.repeat(num_samples, 1, 1)
@@ -65,7 +65,7 @@ def get_misreports_from_bids_with_multiple_inits(model, bids, num_inits, misrepo
         current_misreports.requires_grad_(True)
         big_misreports = current_misreports.repeat(num_samples, 1, 1)
         model.zero_grad()
-        agent_utils = tiled_misreport_util(big_misreports, big_bids, model, sigma=sigma)
+        agent_utils = tiled_misreport_util(big_misreports, big_bids, model, sigma=sigma, payment_sigma=payment_sigma)
 
         (misreports_grad,) = torch.autograd.grad(agent_utils.sum(), big_misreports)
 
